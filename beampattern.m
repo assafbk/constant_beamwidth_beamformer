@@ -7,8 +7,12 @@ c=340; % speed of sound
 M=11; % num of mics in array
 N=(M-1)/2;
 
+%plot consts
+plot_deg = true;
+plot_dB = true;
+
 theta_cbw = deg2rad(20); % the angle of the first mainlobe null 
-f = [4000, 5000, 6000]; % sampled freqs
+f = [4000, 5000, 6000]; % beampattern freqs
 % f=6000;
 
 
@@ -16,19 +20,19 @@ f = [4000, 5000, 6000]; % sampled freqs
 %% plot delay and sum
  w_ds = (1/M)*ones([M,1]);
  w_ds = [w_ds w_ds w_ds]; % FIXME make this nicer
- plot_beampattern(w_ds,f,M,true);
+ plot_beampattern(w_ds,f,M,plot_deg,plot_dB);
 
 
 %% plot modified rectangle
 
 % calc Ks
-% for some freq f, m_tilde = 2k+1 is the largest size of the array
+% for some freq f, m_tilde = 2k-1 is the largest size of the array
 % that still has a mainlobe null larger than theta_cbw (will be smoothed to theta_cbw by g)
 f_low = c/(M*delta*sin(theta_cbw));
 K = zeros([length(f) 1]);
 for i=1:length(f)
     k = 1:N;
-    k((2*k+1)*f(i) > M*f_low) = -1;
+    k((2*k-1)*f(i) > M*f_low) = -1;
     K(i) = max(k);    
 end
 
@@ -50,7 +54,7 @@ for i=1:length(f)
 end
 
 
-plot_beampattern(w_mod_rect,f,M,true);
+plot_beampattern(w_mod_rect,f,M,plot_deg,plot_dB);
 
 
 
@@ -59,7 +63,7 @@ plot_beampattern(w_mod_rect,f,M,true);
 % w - spatial filter weights vector
 % f - vector of wanted freqs
 % M - num of mics in array. choose odd value for M
-function res = plot_beampattern (w, f, M, plot_deg)
+function res = plot_beampattern (w, f, M, plot_deg, plot_dB)
 
     %consts 
     N=(M-1)/2;
@@ -84,7 +88,7 @@ function res = plot_beampattern (w, f, M, plot_deg)
 
     end
     
-    B_dB = 10*log10(abs(B));
+    B_dB = 20*log10(abs(B));
 
     figure
 %     if plot_deg 
@@ -97,14 +101,19 @@ function res = plot_beampattern (w, f, M, plot_deg)
 %         xlim([-pi/2 pi/2]);
 %     end
    
-%     plot(rad2deg(theta), B_dB(:,1),'linewidth',linewd);
-    plot(rad2deg(theta), abs(B(:,1)),'linewidth',linewd);
-    hold on;
-%     plot(rad2deg(theta), B_dB(:,2),'linewidth',linewd);
-%     plot(rad2deg(theta), B_dB(:,3),'linewidth',linewd);
-    plot(rad2deg(theta), abs(B(:,2)),'linewidth',linewd);
-    plot(rad2deg(theta), abs(B(:,3)),'linewidth',linewd);
-    hold off;
+    if plot_dB
+        plot(rad2deg(theta), B_dB(:,1),'linewidth',linewd);
+        hold on;
+        plot(rad2deg(theta), B_dB(:,2),'linewidth',linewd);
+        plot(rad2deg(theta), B_dB(:,3),'linewidth',linewd);
+    else
+        plot(rad2deg(theta), abs(B(:,1)),'linewidth',linewd);
+        hold on;
+        plot(rad2deg(theta), abs(B(:,2)),'linewidth',linewd);
+        plot(rad2deg(theta), abs(B(:,3)),'linewidth',linewd);
+        hold off;
+    end
+    
     set(gca, 'Color', [1, 1, 1]); 
     set(gca, 'FontName', 'Times New Roman');
     set(gca, 'FontSize', hcfontsize);
