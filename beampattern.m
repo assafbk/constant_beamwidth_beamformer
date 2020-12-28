@@ -8,12 +8,13 @@ M=11; % num of mics in array
 N=(M-1)/2;
 
 %plot consts
-plot_deg = true;
-plot_dB = true;
+plot_deg = true;  % deg/rad
+plot_dB = true;   % dB/pow
 
+% model params
 theta_cbw = deg2rad(20); % the angle of the first mainlobe null 
 f = [4000, 5000, 6000]; % beampattern freqs
-% f=6000;
+% f=4000;
 
 
 
@@ -57,6 +58,24 @@ end
 plot_beampattern(w_mod_rect,f,M,plot_deg,plot_dB);
 
 
+
+%% plot DPSS
+
+w_dpss = zeros([M length(f)]);
+
+[m,n] = meshgrid(-N:N);
+for i=1:length(f) 
+    u0 = (2*pi*f(i)*delta/c)*sin(theta_cbw);
+    A = 2*sin((m-n)*u0)./(m-n);
+    A(1:M+1:end) = 1; % set diagonal to 1;
+    A = A*(1/pi);
+    [w_dpss(:,i),D] = eigs(A,1);  % A is symmetric and real, hence always has real eigenvalues
+                                  % this returns the eigenvector corr. to
+                                  % the largest eigenvalue.
+    w_dpss(:,i) = w_dpss(:,i)/sum(w_dpss(:,i));  % normalize
+end
+
+plot_beampattern(w_dpss,f,M,plot_deg,plot_dB);
 
 
 %%
