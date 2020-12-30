@@ -65,17 +65,21 @@ w_dpss = zeros([M length(f)]);
 
 [m,n] = meshgrid(-N:N);
 for i=1:length(f) 
+    
     u0 = (2*pi*f(i)*delta/c)*sin(theta_cbw);
     A = 2*sin((m-n)*u0)./(m-n);
-    A(1:M+1:end) = 1; % set diagonal to 1;
+    A(1:M+1:end) = 2*u0; % set diagonal to lim (m -> n) A[m,n];
     A = A*(1/pi);
     [w_dpss(:,i),D] = eigs(A,1);  % A is symmetric and real, hence always has real eigenvalues
                                   % this returns the eigenvector corr. to
                                   % the largest eigenvalue.
     w_dpss(:,i) = w_dpss(:,i)/sum(w_dpss(:,i));  % normalize
+
 end
 
 plot_beampattern(w_dpss,f,M,plot_deg,plot_dB);
+
+
 
 
 %%
