@@ -125,10 +125,4 @@ end
 plot_beampattern(w_dpss,f,M,plot_deg,plot_dB,plot_2d);
 
 
-%% plot kaiser
-
-w_kaiser = zeros([M length(f)]);
-
-
-
 
