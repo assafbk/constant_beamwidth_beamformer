@@ -63,7 +63,7 @@ function res = plot_beampattern (w, f, M, plot_deg, plot_dB, plot_2d)
             plot(rad2deg(theta), B_dB(:,1),'linewidth',linewd);
             hold on;
             plot(rad2deg(theta), B_dB(:,2),'linewidth',linewd);
-%             plot(rad2deg(theta), B_dB(:,3),'linewidth',linewd);
+            plot(rad2deg(theta), B_dB(:,3),'linewidth',linewd);
 %             plot(rad2deg(theta), B_dB(:,4),'linewidth',linewd);
 %             plot(rad2deg(theta), B_dB(:,5),'linewidth',linewd);
 %             plot(rad2deg(theta), B_dB(:,6),'linewidth',linewd);
@@ -83,9 +83,9 @@ function res = plot_beampattern (w, f, M, plot_deg, plot_dB, plot_2d)
         xlabel('\theta [deg]');
         ylabel('|B(f_0,\theta)| [dB]');
         xlim([-90 90]);
-        ylim([-50 0]);
+        ylim([-80 0]);
 %         lgd = legend('f=1000', 'f=2000', 'f=3000', 'f=4000', 'f=5000', 'f=6000');
-        lgd = legend('f=4000', 'f=6000');
+        lgd = legend('f=3000', 'f=4500', 'f=6000');
 %         lgd = legend('f=6000');
         lgd.FontSize = 28;
 
