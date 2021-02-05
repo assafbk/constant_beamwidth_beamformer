@@ -1,4 +1,8 @@
-function w_kaiser = calc_kaiser(theta_cbw, f, M)
+%{
+ calculates a cbw kaiser window for each freq in the array f
+%}
+
+function [w_kaiser, beta] = calc_kaiser(theta_cbw, f, M)
 
     %consts 
     N=(M-1)/2;
@@ -18,6 +22,7 @@ function w_kaiser = calc_kaiser(theta_cbw, f, M)
 
         if (f(i) < f_min) | (f(i) > f_max)
             w_kaiser(:,i)=1/M;
+            beta = -1;
         else
 
             A_sl = (26*M*f(i)*delta/c)*sin(theta_cbw)-12;

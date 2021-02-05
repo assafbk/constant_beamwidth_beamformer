@@ -92,7 +92,8 @@ function res = plot_beampattern (w, f, M, plot_deg, plot_dB, plot_2d)
         end
         
         if plot_dB
-            ylim([-80 10]);
+%             ylim([-80 10]);
+            ylim([-80 inf]);
             ylabel('|B(f_0,\theta)|^2 [dB]');
         else
             ylabel('|B(f_0,\theta)|');
@@ -102,7 +103,8 @@ function res = plot_beampattern (w, f, M, plot_deg, plot_dB, plot_2d)
 %         lgd = legend('f=4500', 'f=6000', 'f=7500');
 %           lgd = legend('f=4500');
 %         lgd = legend('upper filter', 'gsc', 'adaptive (lower) filter');
-        lgd = legend('upper filter', 'gsc');
+%         lgd = legend('fbf', 'gsc', 'ad');
+        lgd = legend('fbf', 'gsc');
 %         lgd = legend('f=6000');
         lgd.FontSize = 28;
 

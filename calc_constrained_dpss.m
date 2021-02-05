@@ -1,5 +1,7 @@
 function w_cdpss = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_constraint_dB, f, M)
     
+    addpath(genpath('./CRQPACK'))
+
     crq_opts.maxit=300;
     crq_opts.tol=1e-10;
     crq_opts.method=1;
@@ -26,12 +28,18 @@ function w_cdpss = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_c
         % calc constraints
         theta_d = constraint_thetas(1);
         theta_1 = constraint_thetas(2);
+        theta_2 = constraint_thetas(3);
+        theta_3 = constraint_thetas(4);
+        theta_4 = constraint_thetas(5);
 
         m_tag = (-N:N).';
         d_d = exp(-1j*(2*pi*f(i)*delta*sin(theta_d)/c)*m_tag);
         d_1 = exp(-1j*(2*pi*f(i)*delta*sin(theta_1)/c)*m_tag);
-        i_c = [1 attn_at_constraint]';
-        C = [d_d d_1];
+        d_2 = exp(-1j*(2*pi*f(i)*delta*sin(theta_2)/c)*m_tag);
+        d_3 = exp(-1j*(2*pi*f(i)*delta*sin(theta_3)/c)*m_tag);
+        d_4 = exp(-1j*(2*pi*f(i)*delta*sin(theta_4)/c)*m_tag);
+        i_c = [1 attn_at_constraint attn_at_constraint attn_at_constraint attn_at_constraint]';
+        C = [d_d d_1 d_2 d_3 d_4];
         
 %         theta_2 = constraint_thetas(3);
 %         d_2 = exp(-1j*(2*pi*f(i)*delta*sin(theta_2)/c)*m_tag);
@@ -49,6 +57,7 @@ function w_cdpss = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_c
             for k=1:100
                 A = 2*sin((m-n)*u0)./(m-n);
                 A(1:M+1:end) = 2*u0; % set diagonal to lim (m -> n) A[m,n];
+%                 [w_cdpss(:,i),info] = CRQ_Lanczos(-A, C, i_c, crq_opts);
                 [w_cdpss(:,i),info] = CRQ_Lanczos(-A, C, i_c, crq_opts);
 %                 [w_cdpss(:,i),info] = CRQ_explicit(-A, C, i_c);
 %                 w_cdpss(:,i) = w_cdpss(:,i)/sum(w_cdpss(:,i));  % normalize

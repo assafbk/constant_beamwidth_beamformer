@@ -36,16 +36,6 @@ for i=1:length(f)
     d_1 = exp(-1j*(2*pi*f(i)*delta*sin(theta_1)/c)*m);
 %     d_2 = exp(-1j*(2*pi*f(i)*delta*sin(theta_2)/c)*m);
 
-    % assuming the noise field is a diffuse noise field
-    % zeroing all constraint corr matrices, this causes Phi_y = Phi_w
-    % until now we get the same results
-%     sigma_x = 0;    % source energy  % FIXME think about this value
-%     sigma_u = 0;    % angular interference of white gaussian noise
-    % sigma_w = 0.01;  % thermal noise energy
-%     T = 512;        % sampling interval
-%     Phi_x = T*sigma_x*d_d*(d_d'); 
-%     Phi_u = T*sigma_u*d_1*(d_1');
-%     Phi_u = T*sigma_u*d_1*d_1' + T*sigma_u*d_2*d_2';
 
     % white noise field
     % Phi_w = T*sigma_w*eye(M);
@@ -58,10 +48,7 @@ for i=1:length(f)
     % alpha=0.8;
     % Phi_w = alpha^abs(J-I);
 
-%     Phi_v = Phi_u + Phi_w;
-%     Phi_y = Phi_x + Phi_v;
     Phi_y = Phi_w;
-
 
 %     i_c = [1 0 0]';
 %     C = [d_d d_1 d_2];
@@ -69,10 +56,19 @@ for i=1:length(f)
     C = [d_d d_1];
     B = (eye(M) - C*inv(C'*C)*C') * eye(M,M-Mc);
 
-%     w_fbf = C*inv(C'*C)*i_c;  % MN
-%     w_fbf = calc_kaiser(theta_cbw, f(i), M);
-    attn_at_constraint_dB = -70;
-    w_fbf = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_constraint_dB, f(i), M);
+
+  % MN FBF
+%      w_fbf = C*inv(C'*C)*i_c;
+
+  % CBW kaiser FBF
+    w_fbf = calc_kaiser(theta_cbw, f(i), M);
+
+  % CBW constrained DPSS FBF
+%     attn_at_constraint_dB = -70;
+%     w_fbf = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_constraint_dB, f(i), M);
+    
+    
+    
     w_ad = inv(B'*Phi_y*B)*B'*Phi_y*w_fbf;
     w_gsc(:,i) = conj(w_fbf) - (w_ad'*B').';
     

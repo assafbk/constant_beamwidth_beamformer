@@ -187,22 +187,23 @@ close all; clc; clear all;
 %plot consts
 plot_deg = true;  % deg/rad
 plot_dB = true;   % dB/pow
-plot_2d = true;   % plot 2d grid (theta, f axes)
-% plot_2d = false;  % or plot 1d grid (theta axis only)
+% plot_2d = true;   % plot 2d grid (theta, f axes)
+plot_2d = false;  % or plot 1d grid (theta axis only)
 M=17;
 
 theta_cbw = deg2rad(20); % the angle of the first mainlobe null 
 theta_d = deg2rad(0);
 theta_1 = deg2rad(-50);
 constraint_thetas = [theta_d theta_1];  % first is theta_d, others are null directions
+attn_at_constraint_dB = -50;
 
 % f = [4500 6000 7500];
 % f = [6000 6338 7269 7970];
 % f = linspace(0,8000,800);
-% f = [7164 7164];
-f = linspace(0,8000,800);
+f = [7164 7164];
+% f = linspace(0,8000,800);
 
-w_cdpss = calc_constrained_dpss(constraint_thetas, theta_cbw, f, M);
+w_cdpss = calc_constrained_dpss(constraint_thetas, theta_cbw, attn_at_constraint_dB, f, M);
 plot_beampattern(w_cdpss,f,M,plot_deg,plot_dB,plot_2d);
 
 
