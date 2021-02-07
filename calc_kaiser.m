@@ -2,11 +2,11 @@
  calculates a cbw kaiser window for each freq in the array f
 %}
 
-function [w_kaiser, beta] = calc_kaiser(theta_cbw, f, M)
+function [w_kaiser, beta] = calc_kaiser(theta_cbw, f, M, delta)
 
     %consts 
     N=(M-1)/2;
-    delta=0.035; % spatial sampling distance
+%     delta=0.035; % spatial sampling distance
     c=340; % speed of sound
 
     m = -N:N;
