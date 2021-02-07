@@ -9,7 +9,6 @@ function res = plot_beampattern (w, f, M, delta, plot_deg, plot_dB, plot_2d)
     hcfontsize = 20;
     
     %consts 
-%     delta=0.035; % spatial sampling distance
     c=340; % speed of sound
     num_of_angles = 10001; % for theta axis
     
@@ -109,7 +108,7 @@ function res = plot_beampattern (w, f, M, delta, plot_deg, plot_dB, plot_2d)
 %           lgd = legend('f=4500');
 %         lgd = legend('upper filter', 'gsc', 'adaptive (lower) filter');
 %         lgd = legend('fbf', 'gsc', 'ad');
-%         lgd = legend('fbf', 'gsc');
+        lgd = legend('lcmv', 'kp lcmv');
 %         lgd = legend('f=6000');
         lgd.FontSize = 28;
 
