@@ -9,9 +9,9 @@ plot_2d = false;  % or plot 1d grid (theta axis only)
 % model params
 theta_cbw = deg2rad(20);
 theta_d = deg2rad(0);
-theta_nulls = [deg2rad(40)];
+% theta_nulls = [deg2rad(40)];
 % theta_nulls = [deg2rad(40) deg2rad(70)];
-% theta_nulls = [deg2rad(40) deg2rad(-30)];
+theta_nulls = [deg2rad(40) deg2rad(-30)];
 
 % f = [4500];
 % f = [3000 4500 6000];
@@ -102,7 +102,8 @@ plot_beampattern(w_temp,f,M,delta2,plot_deg,plot_dB,plot_2d_temp);
 %% lcmv
 
 % f = linspace(1,8000,800);
-f = linspace(1700,8000,100);
+theta_nulls = [deg2rad(40) deg2rad(-30)];
+f = linspace(1,8000,800);
 
 w_lcmv = zeros([M length(f)]);
 
@@ -125,12 +126,12 @@ for i=1:length(f)
     
     
     % white noise field
-%     sigma_w = 1;
-%     Phi_w = sigma_w*eye(M);
+    sigma_w = 1;
+    Phi_w = sigma_w*eye(M);
 
     % diffuse noise field
-    [I,J] = meshgrid(1:M,1:M);
-    Phi_w = sinc(2*pi*f(i)*(J-I)*delta2/c);
+%     [I,J] = meshgrid(1:M,1:M);
+%     Phi_w = sinc(2*pi*f(i)*(J-I)*delta2/c);
 
     % some other noise field
 %     alpha=0.8;
