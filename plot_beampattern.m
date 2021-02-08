@@ -98,7 +98,7 @@ function res = plot_beampattern (w, f, M, delta, plot_deg, plot_dB, plot_2d)
         
         if plot_dB
 %             ylim([-80 10]);
-            ylim([-80 inf]);
+            ylim([-100 inf]);
             ylabel('|B(f_0,\theta)|^2 [dB]');
         else
             ylabel('|B(f_0,\theta)|');
